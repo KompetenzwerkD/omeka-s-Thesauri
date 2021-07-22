@@ -1,0 +1,59 @@
+<h1>Thesauri</h1>
+
+
+<?php foreach ($thesauri as $thesaurus): ?>
+    <div class="thesaurus">
+        <h4>
+            <span class="edit-link">
+                <a class='o-icon-edit' href='<?php echo $thesaurus['edit_link'] ?>'></a>
+            </span>
+            <?php echo $thesaurus['label'] ?> 
+            [<a href="<?php echo $thesaurus["link"] ?>" ><?php echo $thesaurus["count"] ?></a>]
+            <a href="#" class="toggleConceptList">⇣</a>
+        </h4>
+
+
+        <div class="conceptList" style="display:none;">
+        <?php foreach($thesaurus['items'] as $item): ?>
+        <div>
+            <a class='o-icon-edit' href='<?php echo $item->url('edit') ?>'></a>
+            <?php echo $item->displayTitle()  ?>
+        </div>
+        <?php endforeach; ?>
+            <div>
+                <a class="o-icon-add" href="thesauri/create-concept/<?php echo $thesaurus['id'] ?>"></a>
+            </div>        
+        </div>
+    
+    </div>
+<?php endforeach; ?>
+
+
+
+<script>
+    $('.toggleConceptList').click(function(e) {
+        e.preventDefault()
+
+        const list = e.currentTarget.parentElement.nextElementSibling
+        if (list.style.display === "none") {
+            list.style.display = "block"
+            e.currentTarget.innerHTML = "⇡"
+        } else {
+            list.style.display = "none"
+            e.currentTarget.innerHTML = "⇣"
+        }        
+    })
+</script>
+
+<style>
+    .thesaurus {
+        margin-top: 1em;
+    }
+    .conceptList {
+        margin-left:1em;
+        display: none;
+    }
+    .edit-link {
+        margin-right: 0.5em;
+    }
+</style>
