@@ -114,17 +114,24 @@ class IndexController extends AbstractActionController
     public function deleteThesaurusAction()
     {
         $id = $this->params()->fromRoute('id');
-        $vocab = $this->api()->search('custom_vocabs', [ 'o:item_set' => $id])->getContent()[0];
+        $vocabs = $this->api()->search('custom_vocabs', [ 'o:item_set' => $id])->getContent();
+        foreach ($vocabs as $vocab)
+        {
+            $itemSet = $vocab->itemSet();
+            if ($itemSet) {
+                if ($itemSet->id() == $id) 
+                {
+                    $this->api()->delete('custom_vocabs', $vocab->id());
+                }
+            }
+        }
         
-        foreach ($this->getItemsInItemSet($id) as $concept) {
+        foreach ($this->getItemsInItemSet($id) as $concept) 
+        {
             $this->api()->delete('items', $concept->id());
         }
 
-        $this->api()->delete('custom_vocabs', $vocab->id());
         $this->api()->delete('item_sets', $id);
-
-
-
         $this->redirect()->toRoute('admin/thesauri');
     }
 }
