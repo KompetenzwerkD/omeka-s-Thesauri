@@ -58,11 +58,29 @@ return [
                                     ],
                                     'defaults' => [
                                         'action' => 'createConcept'
+                                    ],
+                                ],
+                            ],
+                            'delete-confirm' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/delete-confirm/:id',
+                                    'defaults' => [
+                                        'action' => 'deleteConfirm',                            
+                                    ],
+                                ],
+                            ]     ,                       
+                            'delete-thesaurus' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/delete-thesaurus/:id',
+                                    'defaults' => [
+                                        'action' => 'deleteThesaurus',                            
                                     ]
                                 ]
-                            ]
-                        ]
-                    ]
+                            ]                            
+                        ],
+                    ],
                 ]
             ]
         ]

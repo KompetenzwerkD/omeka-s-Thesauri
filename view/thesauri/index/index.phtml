@@ -9,9 +9,19 @@
 <?php foreach ($thesauri as $thesaurus): ?>
     <div class="thesaurus">
         <h4>
+
+            <span class="edit-link">
+                <a href="#"
+                        data-sidebar-content-url="thesauri/delete-confirm/<?php echo $thesaurus['id'] ?>"
+                        class="o-icon-delete sidebar-content"
+                        aria-label="Delete"
+                        title="Delete"></a>
+            </span>
+
             <span class="edit-link">
                 <a class='o-icon-edit' href='<?php echo $thesaurus['edit_link'] ?>'></a>
             </span>
+
             <?php echo $thesaurus['label'] ?> 
             [<a href="<?php echo $thesaurus["link"] ?>" ><?php echo $thesaurus["count"] ?></a>]
             <a href="#" class="toggleConceptList">⇣</a>
@@ -35,9 +45,13 @@
     </div>
 <?php endforeach; ?>
 
-
-
-
+<div class="sidebar">
+    <a href="#"
+        class="sidebar-close o-icon-close"
+        aria-label="Close"
+        title="Close"></a>
+    <div class="sidebar-content"></div>
+</div>
 
 <script>
     $('.toggleConceptList').click(function(e) {

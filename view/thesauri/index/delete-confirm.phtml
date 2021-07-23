@@ -1,0 +1,10 @@
+<?php
+    $this->form->setAttribute('action', 'thesauri/delete-thesaurus/' . $this->itemSet->id());
+    $this->form->setButtonLabel('Confirm delete'); // @translate
+?>
+
+<div id="delete">
+    <h3>Delete thesaurus</h3>
+    <p>Are you sure you want to delete the thesaurus "<?php echo $this->itemSet->displayTitle(); ?>" (concept scheme and all it's  related concepts)?</p>
+    <?php echo $this->form($this->form); ?>
+</div>

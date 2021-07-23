@@ -96,4 +96,35 @@ class IndexController extends AbstractActionController
         return  $this->redirect()->toURL($new->url('edit'));
 
     }
+
+    public function deleteConfirmAction()
+    {
+        $form = $this->getForm(ConfirmForm::class);
+
+        $itemSetId = $this->params()->fromRoute('id');
+        $itemSet = $this->api()->read('item_sets', $itemSetId)->getContent();
+
+        $view = new ViewModel;
+        $view->setTerminal(true);
+        $view->setVariable('form', $form);
+        $view->setVariable('itemSet', $itemSet);
+        return $view;
+    }
+
+    public function deleteThesaurusAction()
+    {
+        $id = $this->params()->fromRoute('id');
+        $vocab = $this->api()->search('custom_vocabs', [ 'o:item_set' => $id])->getContent()[0];
+        
+        foreach ($this->getItemsInItemSet($id) as $concept) {
+            $this->api()->delete('items', $concept->id());
+        }
+
+        $this->api()->delete('custom_vocabs', $vocab->id());
+        $this->api()->delete('item_sets', $id);
+
+
+
+        $this->redirect()->toRoute('admin/thesauri');
+    }
 }
