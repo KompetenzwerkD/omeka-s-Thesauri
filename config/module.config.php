@@ -2,6 +2,7 @@
 namespace Thesauri;
 
 use Laminas\Router\Http\Segment;
+use Laminas\Router\Http\Literal;
 
 return [
     'view_manager' => [
@@ -39,6 +40,15 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes' => [
+                            'add' => [
+                                'type' => Literal::class,
+                                'options' => [
+                                    'route' => '/add',
+                                    'defaults' => [
+                                        'action' => 'add',
+                                    ],
+                                ],
+                            ],
                             'create-concept' => [
                                 'type' => Segment::class,
                                 'options' => [

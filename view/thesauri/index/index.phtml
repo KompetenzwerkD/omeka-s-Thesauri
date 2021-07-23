@@ -1,3 +1,8 @@
+
+<div id="page-actions">
+    <?php echo $this->hyperlink('Add new thesaurus', $this->url('admin/thesauri/add'), ['class' => 'button']); ?>
+</div>
+
 <h1>Thesauri</h1>
 
 
@@ -15,18 +20,22 @@
 
         <div class="conceptList" style="display:none;">
         <?php foreach($thesaurus['items'] as $item): ?>
-        <div>
-            <a class='o-icon-edit' href='<?php echo $item->url('edit') ?>'></a>
+        <div class="concept">
+            <span class="edit-link">
+                <a class='o-icon-edit' href='<?php echo $item->url('edit') ?>'></a>
+            </span>
             <?php echo $item->displayTitle()  ?>
         </div>
         <?php endforeach; ?>
-            <div>
+            <div class="concept">
                 <a class="o-icon-add" href="thesauri/create-concept/<?php echo $thesaurus['id'] ?>"></a>
             </div>        
         </div>
     
     </div>
 <?php endforeach; ?>
+
+
 
 
 
@@ -46,6 +55,9 @@
 </script>
 
 <style>
+    .concept {
+        margin-top:0.4em;
+    }
     .thesaurus {
         margin-top: 1em;
     }
