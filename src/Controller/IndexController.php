@@ -16,6 +16,17 @@ class IndexController extends AbstractActionController
         return $class[0]->id();
     }
 
+    private function getTemplateId($templateName) {
+        $templates = $this->api()->search('resource_templates', [
+            "term" => $templateName,
+        ])->getContent();
+        foreach ($templates as $tmp) {
+            $title = $tmp->label();
+            if ($title == $templateName)
+                return $tmp->id();
+        }
+    }     
+
     protected function getItemsInItemSet($item_set_id) {
         $response = $this->api()->search('items', [ "item_set_id" => $item_set_id, "sort_by" => "title"]); 
         return $response->getContent();
@@ -91,6 +102,9 @@ class IndexController extends AbstractActionController
         $item['o:item_set'] = [
             'o:id' => $itemSet,
         ];
+        $item['o:resource_template'] = [
+            'o:id' => $this->getTemplateId('Concept'),
+        ];
 
         $new = $this->api()->create('items', $item)->getContent();
         return  $this->redirect()->toURL($new->url('edit'));
@@ -101,37 +115,55 @@ class IndexController extends AbstractActionController
     {
         $form = $this->getForm(ConfirmForm::class);
 
-        $itemSetId = $this->params()->fromRoute('id');
-        $itemSet = $this->api()->read('item_sets', $itemSetId)->getContent();
+        $id = $this->params()->fromRoute('id');
+        $res = $this->params()->fromRoute('res');
+
+        if ($res == 'thesaurus') {
+            $resource = $this->api()->read('item_sets', $id)->getContent();
+        }
+        elseif ($res == 'concept') {
+            $resource = $this->api()->read('items', $id)->getContent();
+        }
+
+        
 
         $view = new ViewModel;
         $view->setTerminal(true);
         $view->setVariable('form', $form);
-        $view->setVariable('itemSet', $itemSet);
+        //$view->setVariable('itemSet', $itemSet);
+        $view->setVariable('resource', $resource);
+        $view->setVariable('res_type', $res);
         return $view;
     }
 
-    public function deleteThesaurusAction()
+    public function deleteAction()
     {
         $id = $this->params()->fromRoute('id');
-        $vocabs = $this->api()->search('custom_vocabs', [ 'o:item_set' => $id])->getContent();
-        foreach ($vocabs as $vocab)
-        {
-            $itemSet = $vocab->itemSet();
-            if ($itemSet) {
-                if ($itemSet->id() == $id) 
-                {
-                    $this->api()->delete('custom_vocabs', $vocab->id());
+        $res = $this->params()->fromRoute('res');
+
+        if ($res == 'thesaurus') {
+            $vocabs = $this->api()->search('custom_vocabs', [ 'o:item_set' => $id])->getContent();
+            foreach ($vocabs as $vocab)
+            {
+                $itemSet = $vocab->itemSet();
+                if ($itemSet) {
+                    if ($itemSet->id() == $id) 
+                    {
+                        $this->api()->delete('custom_vocabs', $vocab->id());
+                    }
                 }
             }
+            
+            foreach ($this->getItemsInItemSet($id) as $concept) 
+            {
+                $this->api()->delete('items', $concept->id());
+            }
+            $this->api()->delete('item_sets', $id);    
         }
-        
-        foreach ($this->getItemsInItemSet($id) as $concept) 
-        {
-            $this->api()->delete('items', $concept->id());
+        elseif ($res == 'concept') {
+            $this->api()->delete('items', $id);
         }
 
-        $this->api()->delete('item_sets', $id);
         $this->redirect()->toRoute('admin/thesauri');
     }
 }

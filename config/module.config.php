@@ -64,18 +64,18 @@ return [
                             'delete-confirm' => [
                                 'type' => Segment::class,
                                 'options' => [
-                                    'route' => '/delete-confirm/:id',
+                                    'route' => '/delete-confirm/:res/:id',
                                     'defaults' => [
                                         'action' => 'deleteConfirm',                            
                                     ],
                                 ],
                             ]     ,                       
-                            'delete-thesaurus' => [
+                            'delete' => [
                                 'type' => Segment::class,
                                 'options' => [
-                                    'route' => '/delete-thesaurus/:id',
+                                    'route' => '/delete/:res/:id',
                                     'defaults' => [
-                                        'action' => 'deleteThesaurus',                            
+                                        'action' => 'delete',                            
                                     ]
                                 ]
                             ]                            

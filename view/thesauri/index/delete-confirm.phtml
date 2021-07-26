@@ -1,10 +1,14 @@
 <?php
-    $this->form->setAttribute('action', 'thesauri/delete-thesaurus/' . $this->itemSet->id());
+    $this->form->setAttribute('action', 'thesauri/delete/' . $this->res_type . '/' . $this->resource->id());
     $this->form->setButtonLabel('Confirm delete'); // @translate
 ?>
 
 <div id="delete">
-    <h3>Delete thesaurus</h3>
-    <p>Are you sure you want to delete the thesaurus "<?php echo $this->itemSet->displayTitle(); ?>" (concept scheme and all it's  related concepts)?</p>
+    <h3>Delete <?php echo $this->res_type ?></h3>
+    <p>Are you sure you want to delete the <?php echo $this->res_type ?> "<?php echo $this->resource->displayTitle(); ?>" 
+    <?php if ($this->res_type == "thesaurus"): ?>
+        (concept scheme and all it's  related concepts)
+    
+    <?php endif; ?>?</p>
     <?php echo $this->form($this->form); ?>
 </div>

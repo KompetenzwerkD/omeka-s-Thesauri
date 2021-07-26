@@ -12,7 +12,7 @@
 
             <span class="edit-link">
                 <a href="#"
-                        data-sidebar-content-url="thesauri/delete-confirm/<?php echo $thesaurus['id'] ?>"
+                        data-sidebar-content-url="thesauri/delete-confirm/thesaurus/<?php echo $thesaurus['id'] ?>"
                         class="o-icon-delete sidebar-content"
                         aria-label="Delete"
                         title="Delete"></a>
@@ -29,17 +29,56 @@
 
 
         <div class="conceptList" style="display:none;">
-        <?php foreach($thesaurus['items'] as $item): ?>
+        <table class="tablesaw concept-table">
+            <thead>
+                <th>
+                    Concept
+                </th>
+                <th>
+                    Labels
+                </th>
+            </thead>
+            <tbody>
+            <?php foreach($thesaurus['items'] as $item): ?>
+            <tr>
+                <td>
+                    <span class="tablesaw-cell-content">
+                    <?php echo $item->displayTitle()  ?>
+                    <ul class="actions concept-actions">
+                    <li>
+                            <a class='o-icon-edit' href='<?php echo $item->url('edit') ?>'></a>
+                        </li>
+                        <li>
+                            <a href="#"
+                            data-sidebar-content-url="thesauri/delete-confirm/concept/<?php echo $item->id() ?>""
+                            class="o-icon-delete sidebar-content"
+                            aria-label="Delete"
+                            title="Delete"></a>                            
+                        </li>
+                    </ul>
+                    </span>
+                </td>
+                <td>
+                    <span class="tablesaw-cell-content">
+                        <?php foreach($item->value('dcterms:title', ['all' => true]) as $title): ?>
+                            <?php if ($title->lang()): ?>
+                                <div class="alt-label">
+                                    <?php echo $title->asHtml(); ?>
+                                    <div class="alt-label-lang"><?php echo $title->lang(); ?></div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+
+                    </span>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+
         <div class="concept">
-            <span class="edit-link">
-                <a class='o-icon-edit' href='<?php echo $item->url('edit') ?>'></a>
-            </span>
-            <?php echo $item->displayTitle()  ?>
-        </div>
-        <?php endforeach; ?>
-            <div class="concept">
-                <a class="o-icon-add" href="thesauri/create-concept/<?php echo $thesaurus['id'] ?>"></a>
-            </div>        
+            <a class="o-icon-add" href="thesauri/create-concept/<?php echo $thesaurus['id'] ?>"></a>
+        </div>        
         </div>
     
     </div>
@@ -81,5 +120,27 @@
     }
     .edit-link {
         margin-right: 0.5em;
+    }
+    .concept-table {
+        margin-top: 1em;
+    }
+    .concept-actions {
+        float:right;
+    }
+
+    .alt-label {
+        display: inline;
+        margin-right: 1em;
+    }
+    .alt-label-lang {
+        display: inline;
+        font-size: 0.9em;
+        background-color: darkgray;
+        color: white;
+        padding: 3px;
+        padding-left: 6px;
+        padding-right: 6px;
+        border-radius: 3px;
+        font-weight: 600;
     }
 </style>
