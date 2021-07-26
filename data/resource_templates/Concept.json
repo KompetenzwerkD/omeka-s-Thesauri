@@ -1,0 +1,50 @@
+{
+    "o:label": "Concept",
+    "o:resource_template_property": [
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
+            "vocabulary_label": "SKOS",
+            "local_name": "prefLabel",
+            "label": "preferred label"
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
+            "vocabulary_label": "SKOS",
+            "local_name": "definition",
+            "label": "definition"
+        },
+        {
+            "o:alternate_label": null,
+            "o:alternate_comment": null,
+            "o:is_required": false,
+            "o:is_private": false,
+            "data_types": [],
+            "vocabulary_namespace_uri": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
+            "vocabulary_label": "SKOS",
+            "local_name": "exactMatch",
+            "label": "has exact match"
+        }
+    ],
+    "o:resource_class": {
+        "vocabulary_namespace_uri": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
+        "vocabulary_label": "SKOS",
+        "local_name": "Concept",
+        "label": "Concept"
+    },
+    "o:title_property": {
+        "vocabulary_namespace_uri": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
+        "vocabulary_label": "SKOS",
+        "local_name": "prefLabel",
+        "label": "preferred label"
+    }
+}

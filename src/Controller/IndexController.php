@@ -10,9 +10,7 @@ class IndexController extends AbstractActionController
 {
 
     private function getResourceClassId($propertyName) {
-        $class = $this->api()->search('resource_classes', [
-            "local_name" => $propertyName,
-        ])->getContent();
+        $class = $this->api()->search('resource_classes', ["local_name" => $propertyName])->getContent();
         return $class[0]->id();
     }
 
