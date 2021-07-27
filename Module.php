@@ -15,13 +15,14 @@ class Module extends AbstractModule
         return include __DIR__ . '/config/module.config.php';
     }
 
-    private function getResourceClassId($propertyName) {
-        $class = $this->api->read('resource_classes', [
-            "label" => $propertyName  ])->getContent();
+    private function getResourceClassId($propertyName) 
+    {
+        $class = $this->api->read('resource_classes', ["label" => $propertyName])->getContent();
         return $class->id();
     }
 
-    private function getPropertyId($propertyName) {
+    private function getPropertyId($propertyName) 
+    {
         $prop = $this->api->read('properties', ["label" => $propertyName])->getContent();
         return $prop->id();
     }    
@@ -32,9 +33,11 @@ class Module extends AbstractModule
         $label = $data['o:label'];
 
 
-        try {
+        try 
+        {
             $template = $this->api->read('resource_templates', ['label' => $label]);
-        } catch( NotFoundException $e) {
+        } catch( NotFoundException $e) 
+        {
             #set resource class
             $data['o:resource_class']['o:id'] = $this->getResourceClassId(
                 $data['o:resource_class']['label']
@@ -61,14 +64,17 @@ class Module extends AbstractModule
 
     protected function listFilesInDir(string $dirpath): array 
     {
-        if (empty($dirpath) || !file_exists($dirpath) || !is_dir($dirpath) || !is_readable($dirpath) )  {
+        if (empty($dirpath) || !file_exists($dirpath) || !is_dir($dirpath) || !is_readable($dirpath) )  
+        {
             return [];
         }
 
-        $list = array_map(function ($file) use ($dirpath) {
+        $list = array_map(function ($file) use ($dirpath) 
+        {
             return $dirpath . DIRECTORY_SEPARATOR . $file;
         }, scandir($dirpath));
-        $list = array_filter($list, function ($file) {
+        $list = array_filter($list, function ($file) 
+        {
             return is_file($file) && is_readable($file) && filesize($file);
         });
 

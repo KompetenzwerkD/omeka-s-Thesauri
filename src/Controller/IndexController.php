@@ -9,34 +9,35 @@ use Laminas\View\Model\ViewModel;
 class IndexController extends AbstractActionController 
 {
 
-    private function getResourceClassId($propertyName) {
-        $class = $this->api()->search('resource_classes', ["local_name" => $propertyName])->getContent();
-        return $class[0]->id();
+    private function getResourceClassId($propertyName) 
+    {
+        $class = $this->api()->read('resource_classes', ["label" => $propertyName])->getContent();
+        return $class->id();
     }
 
-    private function getTemplateId($templateName) {
-        $templates = $this->api()->search('resource_templates', [
-            "term" => $templateName,
-        ])->getContent();
-        foreach ($templates as $tmp) {
-            $title = $tmp->label();
-            if ($title == $templateName)
-                return $tmp->id();
-        }
+
+    private function getTemplateId($templateName) 
+    {
+        $templates = $this->api()->read('resource_templates', [
+            "label" => $templateName])->getContent();
+        return $templates->id();
     }     
 
-    protected function getItemsInItemSet($item_set_id) {
+
+    protected function getItemsInItemSet($item_set_id) 
+    {
         $response = $this->api()->search('items', [ "item_set_id" => $item_set_id, "sort_by" => "title"]); 
         return $response->getContent();
     }
 
-    public function indexAction() {
 
+    public function indexAction() 
+    {
         $thesauri = [];
-
-        $response = $this->api()->search('item_sets', ["resource_class_label" => "Collection", "sort_by" => "title"]);
+        $response = $this->api()->search('item_sets', ["resource_class_label" => "Concept Scheme", "sort_by" => "title"]);
         $thesauriSets = $response->getContent();
-        foreach ($thesauriSets as $ts) {
+        foreach ($thesauriSets as $ts) 
+        {
             $items = $this->getItemsInItemSet($ts->id());
             array_push($thesauri, [
                 "label" => $ts->displayTitle(),
@@ -53,18 +54,20 @@ class IndexController extends AbstractActionController
         return $view;
     }
 
-    public function addAction() {
+
+    public function addAction() 
+    {
         $form = $this->getForm(AddThesaurusForm::class);
 
         if ($this->getRequest()->isPost()) 
         {
             $form->setData($this->params()->fromPost());
-            if ($form->isValid())
+            if ($form->isValid()) 
             {
                 $formData = $form->getData();
 
                 $label = $formData['o:label'];
-                $resourceClass = $this->getResourceClassId('Collection');
+                $resourceClass = $this->getResourceClassId('Concept Scheme');
                 $itemSetData = [
                     'o:resource_class' => [ 'o:id' => $resourceClass ],
                     'dcterms:title' => [
@@ -72,7 +75,10 @@ class IndexController extends AbstractActionController
                             'type' => 'literal',
                             'property_id' => 1,
                             '@value' => $label,
-                        ]
+                        ],
+                    ],
+                    'o:resource_template' => [
+                        'o:id' => $this->getTemplateId('Concept Scheme'),
                     ]
                 ];
                 $itemSet = $this->api()->create('item_sets', $itemSetData);
@@ -88,6 +94,7 @@ class IndexController extends AbstractActionController
         $view->setVariable('form', $form);
         return $view;        
     }
+
 
     public function createConceptAction() 
     {
@@ -109,7 +116,8 @@ class IndexController extends AbstractActionController
 
     }
 
-    public function deleteConfirmAction()
+
+    public function deleteConfirmAction() 
     {
         $form = $this->getForm(ConfirmForm::class);
 
@@ -123,23 +131,22 @@ class IndexController extends AbstractActionController
             $resource = $this->api()->read('items', $id)->getContent();
         }
 
-        
-
         $view = new ViewModel;
         $view->setTerminal(true);
         $view->setVariable('form', $form);
-        //$view->setVariable('itemSet', $itemSet);
         $view->setVariable('resource', $resource);
         $view->setVariable('res_type', $res);
         return $view;
     }
 
-    public function deleteAction()
+
+    public function deleteAction() 
     {
         $id = $this->params()->fromRoute('id');
         $res = $this->params()->fromRoute('res');
 
-        if ($res == 'thesaurus') {
+        if ($res == 'thesaurus') 
+        {
             $vocabs = $this->api()->search('custom_vocabs', [ 'o:item_set' => $id])->getContent();
             foreach ($vocabs as $vocab)
             {
