@@ -32,7 +32,7 @@
             "vocabulary_namespace_uri": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
             "vocabulary_label": "SKOS",
             "local_name": "exactMatch",
-            "label": "exact match"
+            "label": "has exact match"
         }
     ],
     "o:resource_class": {

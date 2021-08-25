@@ -44,7 +44,7 @@ class Module extends AbstractModule
             );
 
             #set title property
-            if ($data['o:title_property']) {
+            if (in_array('o:title_property', $data)) {
                 $data['o:title_property']['o:id'] = $this->getPropertyId(
                     $data['o:title_property']['label']
                 );    
