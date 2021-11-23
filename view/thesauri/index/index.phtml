@@ -60,7 +60,7 @@
                 </td>
                 <td>
                     <span class="tablesaw-cell-content">
-                        <?php foreach($item->value('dcterms:title', ['all' => true]) as $title): ?>
+                        <?php foreach($item->value('skos:prefLabel', ['all' => true]) as $title): ?>
                             <?php if ($title->lang()): ?>
                                 <div class="alt-label">
                                     <?php echo $title->asHtml(); ?>
