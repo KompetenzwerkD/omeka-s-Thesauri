@@ -43,12 +43,11 @@ class Module extends AbstractModule
                 $data['o:resource_class']['label']
             );
 
-            #set title property
-            if (in_array('o:title_property', $data)) {
+            if ($data['o:title_property']) {
                 $data['o:title_property']['o:id'] = $this->getPropertyId(
                     $data['o:title_property']['label']
-                );    
-            }
+                );
+            }            
 
             #set template properties
             foreach($data['o:resource_template_property'] as $key => $prop) {
